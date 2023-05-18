@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package api.blog.v1;
+
+option go_package = "blog/v1;v1";
+
+// The Blog service definition.
+service Blog {
+  // 获取博客首页
+  rpc GetIndex (IndexReq) returns (IndexResp) {
+  }
+}
+
+// 获取首页
+message IndexReq {
+}
+
+// 首页内容
+message IndexResp {
+  string message = 1;
+}
+
+
+// 获取博文列表
+
+
+// 获取文章详情页
+
+
+// 获取文章弹幕列表
+
