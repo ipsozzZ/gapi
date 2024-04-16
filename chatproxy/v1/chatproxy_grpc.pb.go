@@ -27,7 +27,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatProxyClient interface {
 	// Sends a greeting
-	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
+	SayHello(ctx context.Context, in *ChatRequest, opts ...grpc.CallOption) (*ChatReply, error)
 }
 
 type chatProxyClient struct {
@@ -38,8 +38,8 @@ func NewChatProxyClient(cc grpc.ClientConnInterface) ChatProxyClient {
 	return &chatProxyClient{cc}
 }
 
-func (c *chatProxyClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error) {
-	out := new(HelloReply)
+func (c *chatProxyClient) SayHello(ctx context.Context, in *ChatRequest, opts ...grpc.CallOption) (*ChatReply, error) {
+	out := new(ChatReply)
 	err := c.cc.Invoke(ctx, ChatProxy_SayHello_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -52,7 +52,7 @@ func (c *chatProxyClient) SayHello(ctx context.Context, in *HelloRequest, opts .
 // for forward compatibility
 type ChatProxyServer interface {
 	// Sends a greeting
-	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
+	SayHello(context.Context, *ChatRequest) (*ChatReply, error)
 	mustEmbedUnimplementedChatProxyServer()
 }
 
@@ -60,7 +60,7 @@ type ChatProxyServer interface {
 type UnimplementedChatProxyServer struct {
 }
 
-func (UnimplementedChatProxyServer) SayHello(context.Context, *HelloRequest) (*HelloReply, error) {
+func (UnimplementedChatProxyServer) SayHello(context.Context, *ChatRequest) (*ChatReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
 func (UnimplementedChatProxyServer) mustEmbedUnimplementedChatProxyServer() {}
@@ -77,7 +77,7 @@ func RegisterChatProxyServer(s grpc.ServiceRegistrar, srv ChatProxyServer) {
 }
 
 func _ChatProxy_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HelloRequest)
+	in := new(ChatRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -89,7 +89,7 @@ func _ChatProxy_SayHello_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: ChatProxy_SayHello_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatProxyServer).SayHello(ctx, req.(*HelloRequest))
+		return srv.(ChatProxyServer).SayHello(ctx, req.(*ChatRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

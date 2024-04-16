@@ -23,38 +23,35 @@ const OperationChatProxySayHello = "/chatproxy.v1.ChatProxy/SayHello"
 
 type ChatProxyHTTPServer interface {
 	// SayHello Sends a greeting
-	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
+	SayHello(context.Context, *ChatRequest) (*ChatReply, error)
 }
 
 func RegisterChatProxyHTTPServer(s *http.Server, srv ChatProxyHTTPServer) {
 	r := s.Route("/")
-	r.GET("/helloworld/{name}", _ChatProxy_SayHello0_HTTP_Handler(srv))
+	r.POST("/chatproxy", _ChatProxy_SayHello0_HTTP_Handler(srv))
 }
 
 func _ChatProxy_SayHello0_HTTP_Handler(srv ChatProxyHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in HelloRequest
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindVars(&in); err != nil {
+		var in ChatRequest
+		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, OperationChatProxySayHello)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.SayHello(ctx, req.(*HelloRequest))
+			return srv.SayHello(ctx, req.(*ChatRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*HelloReply)
+		reply := out.(*ChatReply)
 		return ctx.Result(200, reply)
 	}
 }
 
 type ChatProxyHTTPClient interface {
-	SayHello(ctx context.Context, req *HelloRequest, opts ...http.CallOption) (rsp *HelloReply, err error)
+	SayHello(ctx context.Context, req *ChatRequest, opts ...http.CallOption) (rsp *ChatReply, err error)
 }
 
 type ChatProxyHTTPClientImpl struct {
@@ -65,13 +62,13 @@ func NewChatProxyHTTPClient(client *http.Client) ChatProxyHTTPClient {
 	return &ChatProxyHTTPClientImpl{client}
 }
 
-func (c *ChatProxyHTTPClientImpl) SayHello(ctx context.Context, in *HelloRequest, opts ...http.CallOption) (*HelloReply, error) {
-	var out HelloReply
-	pattern := "/helloworld/{name}"
-	path := binding.EncodeURL(pattern, in, true)
+func (c *ChatProxyHTTPClientImpl) SayHello(ctx context.Context, in *ChatRequest, opts ...http.CallOption) (*ChatReply, error) {
+	var out ChatReply
+	pattern := "/chatproxy"
+	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationChatProxySayHello))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
