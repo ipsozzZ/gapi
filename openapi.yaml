@@ -11,8 +11,8 @@ paths:
         post:
             tags:
                 - ChatProxy
-            description: Sends a greeting
-            operationId: ChatProxy_SayHello
+            description: 发送一个文本给gpt
+            operationId: ChatProxy_SayMessage
             requestBody:
                 content:
                     application/json:

@@ -19,15 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ChatProxy_SayHello_FullMethodName = "/chatproxy.v1.ChatProxy/SayHello"
+	ChatProxy_SayMessage_FullMethodName = "/chatproxy.v1.ChatProxy/SayMessage"
 )
 
 // ChatProxyClient is the client API for ChatProxy service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatProxyClient interface {
-	// Sends a greeting
-	SayHello(ctx context.Context, in *ChatRequest, opts ...grpc.CallOption) (*ChatReply, error)
+	// 发送一个文本给gpt
+	SayMessage(ctx context.Context, in *ChatRequest, opts ...grpc.CallOption) (*ChatReply, error)
 }
 
 type chatProxyClient struct {
@@ -38,9 +38,9 @@ func NewChatProxyClient(cc grpc.ClientConnInterface) ChatProxyClient {
 	return &chatProxyClient{cc}
 }
 
-func (c *chatProxyClient) SayHello(ctx context.Context, in *ChatRequest, opts ...grpc.CallOption) (*ChatReply, error) {
+func (c *chatProxyClient) SayMessage(ctx context.Context, in *ChatRequest, opts ...grpc.CallOption) (*ChatReply, error) {
 	out := new(ChatReply)
-	err := c.cc.Invoke(ctx, ChatProxy_SayHello_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, ChatProxy_SayMessage_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,8 +51,8 @@ func (c *chatProxyClient) SayHello(ctx context.Context, in *ChatRequest, opts ..
 // All implementations must embed UnimplementedChatProxyServer
 // for forward compatibility
 type ChatProxyServer interface {
-	// Sends a greeting
-	SayHello(context.Context, *ChatRequest) (*ChatReply, error)
+	// 发送一个文本给gpt
+	SayMessage(context.Context, *ChatRequest) (*ChatReply, error)
 	mustEmbedUnimplementedChatProxyServer()
 }
 
@@ -60,8 +60,8 @@ type ChatProxyServer interface {
 type UnimplementedChatProxyServer struct {
 }
 
-func (UnimplementedChatProxyServer) SayHello(context.Context, *ChatRequest) (*ChatReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
+func (UnimplementedChatProxyServer) SayMessage(context.Context, *ChatRequest) (*ChatReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SayMessage not implemented")
 }
 func (UnimplementedChatProxyServer) mustEmbedUnimplementedChatProxyServer() {}
 
@@ -76,20 +76,20 @@ func RegisterChatProxyServer(s grpc.ServiceRegistrar, srv ChatProxyServer) {
 	s.RegisterService(&ChatProxy_ServiceDesc, srv)
 }
 
-func _ChatProxy_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ChatProxy_SayMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ChatRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChatProxyServer).SayHello(ctx, in)
+		return srv.(ChatProxyServer).SayMessage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ChatProxy_SayHello_FullMethodName,
+		FullMethod: ChatProxy_SayMessage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatProxyServer).SayHello(ctx, req.(*ChatRequest))
+		return srv.(ChatProxyServer).SayMessage(ctx, req.(*ChatRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -102,8 +102,8 @@ var ChatProxy_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ChatProxyServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SayHello",
-			Handler:    _ChatProxy_SayHello_Handler,
+			MethodName: "SayMessage",
+			Handler:    _ChatProxy_SayMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

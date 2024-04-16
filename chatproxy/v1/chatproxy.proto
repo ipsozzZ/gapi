@@ -8,8 +8,8 @@ option go_package = "chatproxy/v1;v1";
 
 // The ChatProxy service definition.
 service ChatProxy {
-  // Sends a greeting
-  rpc SayHello (ChatRequest) returns (ChatReply) {
+  // 发送一个文本给gpt
+  rpc SayMessage (ChatRequest) returns (ChatReply) {
     option (google.api.http) = {
       post: "/chatproxy"
       body: "*"

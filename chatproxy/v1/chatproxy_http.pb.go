@@ -19,27 +19,27 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationChatProxySayHello = "/chatproxy.v1.ChatProxy/SayHello"
+const OperationChatProxySayMessage = "/chatproxy.v1.ChatProxy/SayMessage"
 
 type ChatProxyHTTPServer interface {
-	// SayHello Sends a greeting
-	SayHello(context.Context, *ChatRequest) (*ChatReply, error)
+	// SayMessage 发送一个文本给gpt
+	SayMessage(context.Context, *ChatRequest) (*ChatReply, error)
 }
 
 func RegisterChatProxyHTTPServer(s *http.Server, srv ChatProxyHTTPServer) {
 	r := s.Route("/")
-	r.POST("/chatproxy", _ChatProxy_SayHello0_HTTP_Handler(srv))
+	r.POST("/chatproxy", _ChatProxy_SayMessage0_HTTP_Handler(srv))
 }
 
-func _ChatProxy_SayHello0_HTTP_Handler(srv ChatProxyHTTPServer) func(ctx http.Context) error {
+func _ChatProxy_SayMessage0_HTTP_Handler(srv ChatProxyHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in ChatRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationChatProxySayHello)
+		http.SetOperation(ctx, OperationChatProxySayMessage)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.SayHello(ctx, req.(*ChatRequest))
+			return srv.SayMessage(ctx, req.(*ChatRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -51,7 +51,7 @@ func _ChatProxy_SayHello0_HTTP_Handler(srv ChatProxyHTTPServer) func(ctx http.Co
 }
 
 type ChatProxyHTTPClient interface {
-	SayHello(ctx context.Context, req *ChatRequest, opts ...http.CallOption) (rsp *ChatReply, err error)
+	SayMessage(ctx context.Context, req *ChatRequest, opts ...http.CallOption) (rsp *ChatReply, err error)
 }
 
 type ChatProxyHTTPClientImpl struct {
@@ -62,11 +62,11 @@ func NewChatProxyHTTPClient(client *http.Client) ChatProxyHTTPClient {
 	return &ChatProxyHTTPClientImpl{client}
 }
 
-func (c *ChatProxyHTTPClientImpl) SayHello(ctx context.Context, in *ChatRequest, opts ...http.CallOption) (*ChatReply, error) {
+func (c *ChatProxyHTTPClientImpl) SayMessage(ctx context.Context, in *ChatRequest, opts ...http.CallOption) (*ChatReply, error) {
 	var out ChatReply
 	pattern := "/chatproxy"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationChatProxySayHello))
+	opts = append(opts, http.Operation(OperationChatProxySayMessage))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
