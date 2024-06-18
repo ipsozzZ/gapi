@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ChatProxy_SayMessage_FullMethodName = "/chatproxy.v1.ChatProxy/SayMessage"
+	ChatProxy_SayMessage_FullMethodName   = "/chatproxy.v1.ChatProxy/SayMessage"
+	ChatProxy_WsSayMessage_FullMethodName = "/chatproxy.v1.ChatProxy/WsSayMessage"
 )
 
 // ChatProxyClient is the client API for ChatProxy service.
@@ -28,6 +29,8 @@ const (
 type ChatProxyClient interface {
 	// 发送一个文本给gpt
 	SayMessage(ctx context.Context, in *ChatRequest, opts ...grpc.CallOption) (*ChatReply, error)
+	// 发送一个文本到聊天室
+	WsSayMessage(ctx context.Context, in *WsChatRequest, opts ...grpc.CallOption) (*WsChatReply, error)
 }
 
 type chatProxyClient struct {
@@ -47,12 +50,23 @@ func (c *chatProxyClient) SayMessage(ctx context.Context, in *ChatRequest, opts 
 	return out, nil
 }
 
+func (c *chatProxyClient) WsSayMessage(ctx context.Context, in *WsChatRequest, opts ...grpc.CallOption) (*WsChatReply, error) {
+	out := new(WsChatReply)
+	err := c.cc.Invoke(ctx, ChatProxy_WsSayMessage_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChatProxyServer is the server API for ChatProxy service.
 // All implementations must embed UnimplementedChatProxyServer
 // for forward compatibility
 type ChatProxyServer interface {
 	// 发送一个文本给gpt
 	SayMessage(context.Context, *ChatRequest) (*ChatReply, error)
+	// 发送一个文本到聊天室
+	WsSayMessage(context.Context, *WsChatRequest) (*WsChatReply, error)
 	mustEmbedUnimplementedChatProxyServer()
 }
 
@@ -62,6 +76,9 @@ type UnimplementedChatProxyServer struct {
 
 func (UnimplementedChatProxyServer) SayMessage(context.Context, *ChatRequest) (*ChatReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayMessage not implemented")
+}
+func (UnimplementedChatProxyServer) WsSayMessage(context.Context, *WsChatRequest) (*WsChatReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WsSayMessage not implemented")
 }
 func (UnimplementedChatProxyServer) mustEmbedUnimplementedChatProxyServer() {}
 
@@ -94,6 +111,24 @@ func _ChatProxy_SayMessage_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatProxy_WsSayMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WsChatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatProxyServer).WsSayMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatProxy_WsSayMessage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatProxyServer).WsSayMessage(ctx, req.(*WsChatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ChatProxy_ServiceDesc is the grpc.ServiceDesc for ChatProxy service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -104,6 +139,10 @@ var ChatProxy_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SayMessage",
 			Handler:    _ChatProxy_SayMessage_Handler,
+		},
+		{
+			MethodName: "WsSayMessage",
+			Handler:    _ChatProxy_WsSayMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

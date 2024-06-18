@@ -15,6 +15,9 @@ service ChatProxy {
       body: "*"
     };
   }
+
+  // 发送一个文本到聊天室
+  rpc WsSayMessage (WsChatRequest) returns (WsChatReply) {}
 }
 
 // 给ChatGPT的文本
@@ -25,4 +28,21 @@ message ChatRequest {
 // ChatGPT回应的文本
 message ChatReply {
   string message = 1;
+}
+
+// ws聊天内容
+message WsChatRequest {
+  string session_id = 1;
+  string message = 2;
+}
+
+// ws聊天回应
+message WsChatReply {
+  string session_id = 1;
+}
+
+// ws聊天同步
+message NtfWsChatMsg {
+  string session_id = 1;
+  string message = 2;
 }
