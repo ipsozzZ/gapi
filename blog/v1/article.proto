@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package blog.api.v1;
+
+option go_package = "blog/v1;v1";
+
+import "blog/v1/blog_def.proto";
+
+// 保存文章
+message ReqSaveArticle {
+    int32 uid = 1;
+    Article detail = 2;
+}
+
+message RespSaveArticle {
+    int32 err_code = 1;
+}
+
+// 删除文章
+message ReqDeleteArticle {
+    int32 uid = 1;
+    int32 article_id = 2;
+}
+message RespDeleteArticle {
+    int32 err_code = 1;
+}
+
+// 请求文章
+message ReqArticleDetail {
+    int32 uid = 1;
+    int32 article_id = 2;
+}
+
+message RespArticleDetail {
+    Article detail = 1;
+}
+
+// 请求page页所有文章
+message ReqListArticle {
+    int32 uid = 1;
+    int32 page = 2;
+}
+
+message SnapArticle {
+    int32  id      = 1;
+    int32  like    = 2;
+    int32  views   = 3;
+    string account = 4;
+    string title   = 5;
+    string intro   = 6;
+}
+
+message RespListArticle {
+    repeated SnapArticle articles = 1;
+}
+
+// like文章
+message ReqLikeArticle {
+    int32 article_id = 1;
+}
+
+message RespLikeArticle {
+}
+
+// 浏览文章
+message ReqHitsArticle {
+    int32 article_id = 1;
+}
+
+message RespHitsArticle {
+}

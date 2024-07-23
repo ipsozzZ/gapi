@@ -4,82 +4,117 @@ package blog.api.v1;
 
 option go_package = "blog/v1;v1";
 
-import "third_party/google/api/annotations.proto";
-import "third_party/validate/validate.proto";
+import "google/api/annotations.proto";
+
+import "blog/v1/blog_def.proto";
+import "blog/v1/user.proto";
+import "blog/v1/article.proto";
 
 service BlogService {
-    rpc CreateArticle (CreateArticleRequest) returns (CreateArticleReply) {
+
+    // user相关api
+    rpc UserDetail (ReqUserDetail) returns (RespUserDetail) {
         option (google.api.http) = {
-            post: "/v1/article"
+            post: "/user"
             body: "*"
         };
     }
-    rpc UpdateArticle (UpdateArticleRequest) returns (UpdateArticleReply) {
+    rpc SaveUser (ReqSaveUser) returns (RespSaveUser) {
         option (google.api.http) = {
-            put: "/v1/article/{id}"
+            post: "/user/save"
             body: "*"
         };
     }
-    rpc DeleteArticle (DeleteArticleRequest) returns (DeleteArticleReply) {
+    rpc ChangeUserState (ReqChangeUserState) returns (RespChangeUserState) {
         option (google.api.http) = {
-            delete: "/v1/article/{id}"
+            post: "/user/changestate"
+            body: "*"
         };
     }
-    rpc GetArticle (GetArticleRequest) returns (GetArticleReply) {
+    rpc ListUser (ReqListUser) returns (RespListUser) {
         option (google.api.http) = {
-            get: "/v1/article/{id}"
+            post: "/user/list"
+            body: "*"
         };
     }
-    rpc ListArticle (ListArticleRequest) returns (ListArticleReply) {
+
+    // gconfig相关api
+    rpc SaveSystemConfig (ReqSaveSystemConfig) returns (RespSaveSystemConfig) {
         option (google.api.http) = {
-            get: "/v1/article"
+            post: "/config/save"
+            body: "*"
         };
     }
+    rpc GetSystemConfig (ReqGetSystemConfig) returns (RespGetSystemConfig) {
+        option (google.api.http) = {
+            post: "/config"
+            body: "*"
+        };
+    }
+
+    // 文章相关api
+    rpc ListArticle (ReqListArticle) returns (RespListArticle) {
+        option (google.api.http) = {
+            get: "/article/list"
+        };
+    }
+    rpc SaveArticle (ReqSaveArticle) returns (RespSaveArticle) {
+        option (google.api.http) = {
+            post: "/article/save"
+            body: "*"
+        };
+    }
+    rpc DeleteArticle (ReqDeleteArticle) returns (RespDeleteArticle) {
+        option (google.api.http) = {
+            post: "/article/del"
+            body: "*"
+        };
+    }
+    rpc ArticleDetail (ReqArticleDetail) returns (RespArticleDetail) {
+        option (google.api.http) = {
+            get: "/article/{article_id}"
+        };
+    }
+    rpc LikeArticle (ReqLikeArticle) returns (RespLikeArticle) {
+        option (google.api.http) = {
+            post: "/article/like"
+            body: "*"
+        };
+    }
+    rpc HitsArticle (ReqHitsArticle) returns (RespHitsArticle) {
+        option (google.api.http) = {
+            post: "/article/hits"
+            body: "*"
+        };
+    }
+    // 文章评论相关api
+
+    // 留言相关api
 }
 
-message Article {
-    int64 id = 1;
-    string title = 2;
-    string content = 3;
-    int64 like = 4;
+// 保存文章
+message ReqSaveSystemConfig {
+    int32 uid      = 1;
+    int32 cid      = 2;
+    int32 c_type   = 3;
+    string intro   = 4;
+    SysConfig conf = 5;
 }
 
-message CreateArticleRequest {
-    string title = 1 [(validate.rules).string = {min_len: 5, max_len: 50}]; // the title of string must be between 5 and 50 character
-    string content = 2;
+message RespSaveSystemConfig {
+    int32 err_code = 1;
 }
 
-message CreateArticleReply {
-    Article Article = 1;
+// 请求配置
+message ReqGetSystemConfig {
+    int32 uid      = 1;
+    int32 c_type   = 3;
 }
 
-message UpdateArticleRequest {
-    int64 id = 1 [(validate.rules).int64 = {gt: 0}];
-    string title = 2 [(validate.rules).string = {min_len: 5, max_len: 50}]; // the title of string must be between 5 and 50 character;
-    string content = 3;
-}
-
-message UpdateArticleReply {
-    Article Article = 1;
-}
-
-message DeleteArticleRequest {
-    int64 id = 1;
-}
-message DeleteArticleReply {
-}
-
-message GetArticleRequest {
-    int64 id = 1;
-}
-
-message GetArticleReply {
-    Article Article = 1;
-}
-
-message ListArticleRequest {
-}
-
-message ListArticleReply {
-    repeated Article results = 1;
+message RespGetSystemConfig {
+    int32 err_code = 1;
+    int32 cid      = 2;
+    int32 c_type   = 3;
+    string intro   = 4;
+    SysConfig conf = 5;
 }

@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package blog.api.v1;
+
+option go_package = "blog/v1;v1";
+
+message CUser {
+    int32  uid       = 1;
+    int32  sex       = 2;
+    string account   = 3;
+    string nickname  = 4;
+    string intro     = 5;
+    string indexlink = 6;
+}
+
+
+// 保存玩家
+message ReqSaveUser {
+    int32 uid = 1;
+    CUser user = 2;
+}
+
+message RespSaveUser {
+    int32 err_code = 1;
+}
+
+// 修改玩家状态
+message ReqChangeUserState {
+    int32 uid = 1;
+    int32 target_uid = 2;
+    int32 state = 3;
+}
+message RespChangeUserState {
+    int32 err_code = 1;
+}
+
+// 请求玩家详细数据
+message ReqUserDetail {
+    int32 uid = 1;
+    int32 target_uid = 2;
+}
+
+message RespUserDetail {
+    int32 article_id = 1;
+    CUser detail = 2;
+}
+
+// 请求玩家
+message ReqListUser {
+    int32 uid = 1;
+    int32 page = 2;
+}
+
+message RespListUser {
+    int32 article_id = 1;
+    repeated CUser users = 2;
+}
