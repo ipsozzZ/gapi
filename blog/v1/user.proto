@@ -41,7 +41,7 @@ message ReqUserDetail {
 }
 
 message RespUserDetail {
-    int32 article_id = 1;
+    int32 err_code = 1;
     CUser detail = 2;
 }
 
@@ -52,6 +52,6 @@ message ReqListUser {
 }
 
 message RespListUser {
-    int32 article_id = 1;
+    int32 err_code = 1;
     repeated CUser users = 2;
 }

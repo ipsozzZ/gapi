@@ -32,7 +32,8 @@ message ReqArticleDetail {
 }
 
 message RespArticleDetail {
-    Article detail = 1;
+    int32 err_code = 1;
+    Article detail = 2;
 }
 
 // 请求page页所有文章
@@ -51,7 +52,8 @@ message SnapArticle {
 }
 
 message RespListArticle {
-    repeated SnapArticle articles = 1;
+    int32 err_code = 1;
+    repeated SnapArticle articles = 2;
 }
 
 // like文章
@@ -60,6 +62,7 @@ message ReqLikeArticle {
 }
 
 message RespLikeArticle {
+    int32 err_code = 1;
 }
 
 // 浏览文章
@@ -68,4 +71,5 @@ message ReqHitsArticle {
 }
 
 message RespHitsArticle {
+    int32 err_code = 1;
 }
