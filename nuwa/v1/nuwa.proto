@@ -5,7 +5,6 @@ package nuwa.api.v1;
 option go_package = "nuwa/v1;v1";
 
 import "google/api/annotations.proto";
-import "blog/v1/blog_def.proto";
 
 service NuwaService {
 
@@ -56,5 +55,15 @@ message ReqUserSession {
 
 message RespUserSession {
     int32 err_code = 1;
-    blog.v1.CUser user = 2;
+    CUser user = 2;
+}
+
+message CUser {
+    int32  uid       = 1;
+    int32  sex       = 2;
+    string account   = 3;
+    string nickname  = 4;
+    string intro     = 5;
+    string indexlink = 6;
+    string session   = 7;
 }
