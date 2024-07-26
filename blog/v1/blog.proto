@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package blog.api.v1;
+package blog.v1;
 
 option go_package = "blog/v1;v1";
 

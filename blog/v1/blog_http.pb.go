@@ -19,18 +19,18 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationBlogServiceArticleDetail = "/blog.api.v1.BlogService/ArticleDetail"
-const OperationBlogServiceChangeUserState = "/blog.api.v1.BlogService/ChangeUserState"
-const OperationBlogServiceDeleteArticle = "/blog.api.v1.BlogService/DeleteArticle"
-const OperationBlogServiceGetSystemConfig = "/blog.api.v1.BlogService/GetSystemConfig"
-const OperationBlogServiceHitsArticle = "/blog.api.v1.BlogService/HitsArticle"
-const OperationBlogServiceLikeArticle = "/blog.api.v1.BlogService/LikeArticle"
-const OperationBlogServiceListArticle = "/blog.api.v1.BlogService/ListArticle"
-const OperationBlogServiceListUser = "/blog.api.v1.BlogService/ListUser"
-const OperationBlogServiceSaveArticle = "/blog.api.v1.BlogService/SaveArticle"
-const OperationBlogServiceSaveSystemConfig = "/blog.api.v1.BlogService/SaveSystemConfig"
-const OperationBlogServiceSaveUser = "/blog.api.v1.BlogService/SaveUser"
-const OperationBlogServiceUserDetail = "/blog.api.v1.BlogService/UserDetail"
+const OperationBlogServiceArticleDetail = "/blog.v1.BlogService/ArticleDetail"
+const OperationBlogServiceChangeUserState = "/blog.v1.BlogService/ChangeUserState"
+const OperationBlogServiceDeleteArticle = "/blog.v1.BlogService/DeleteArticle"
+const OperationBlogServiceGetSystemConfig = "/blog.v1.BlogService/GetSystemConfig"
+const OperationBlogServiceHitsArticle = "/blog.v1.BlogService/HitsArticle"
+const OperationBlogServiceLikeArticle = "/blog.v1.BlogService/LikeArticle"
+const OperationBlogServiceListArticle = "/blog.v1.BlogService/ListArticle"
+const OperationBlogServiceListUser = "/blog.v1.BlogService/ListUser"
+const OperationBlogServiceSaveArticle = "/blog.v1.BlogService/SaveArticle"
+const OperationBlogServiceSaveSystemConfig = "/blog.v1.BlogService/SaveSystemConfig"
+const OperationBlogServiceSaveUser = "/blog.v1.BlogService/SaveUser"
+const OperationBlogServiceUserDetail = "/blog.v1.BlogService/UserDetail"
 
 type BlogServiceHTTPServer interface {
 	ArticleDetail(context.Context, *ReqArticleDetail) (*RespArticleDetail, error)

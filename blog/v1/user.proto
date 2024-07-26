@@ -1,18 +1,10 @@
 syntax = "proto3";
 
-package blog.api.v1;
+package blog.v1;
 
 option go_package = "blog/v1;v1";
 
-message CUser {
-    int32  uid       = 1;
-    int32  sex       = 2;
-    string account   = 3;
-    string nickname  = 4;
-    string intro     = 5;
-    string indexlink = 6;
-}
-
+import "blog/v1/blog_def.proto";
 
 // 保存玩家
 message ReqSaveUser {

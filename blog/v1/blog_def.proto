@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package blog.api.v1;
+package blog.v1;
 
 option go_package = "blog/v1;v1";
 
@@ -14,6 +14,16 @@ message User {
     string intro     = 6;
     string indexlink = 7;
     int32  state     = 8;
+}
+
+message CUser {
+    int32  uid       = 1;
+    int32  sex       = 2;
+    string account   = 3;
+    string nickname  = 4;
+    string intro     = 5;
+    string indexlink = 6;
+    string session   = 7;
 }
 
 // db article mode 

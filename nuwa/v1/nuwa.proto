@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package nuwa.api.v1;
+
+option go_package = "nuwa/v1;v1";
+
+import "google/api/annotations.proto";
+import "blog/v1/blog_def.proto";
+
+service NuwaService {
+
+    // 登入、登出
+    rpc Login (ReqUserLogin) returns (RespUserLogin) {
+        option (google.api.http) = {
+            post: "/login"
+            body: "*"
+        };
+    }
+    rpc Logout (ReqUserLogout) returns (RespUserLogout) {
+        option (google.api.http) = {
+            post: "/logout"
+            body: "*"
+        };
+    }
+
+    // 获取已登录玩家数据（用于鉴权等）
+    rpc GetUserSession (ReqUserSession) returns (RespUserSession) {
+        option (google.api.http) = {
+            post: "/session"
+            body: "*"
+        };
+    }
+}
+
+message ReqUserLogin {
+    int32 uid = 1;
+    string account = 2;
+    string sign = 3;
+}
+
+message RespUserLogin {
+    int32 err_code = 1;
+}
+
+message ReqUserLogout {
+    int32 uid = 1;
+}
+
+message RespUserLogout {
+    int32 err_code = 1;
+}
+
+message ReqUserSession {
+    int32 uid = 1;
+}
+
+message RespUserSession {
+    int32 err_code = 1;
+    blog.v1.CUser user = 2;
+}

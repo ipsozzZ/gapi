@@ -19,18 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	BlogService_UserDetail_FullMethodName       = "/blog.api.v1.BlogService/UserDetail"
-	BlogService_SaveUser_FullMethodName         = "/blog.api.v1.BlogService/SaveUser"
-	BlogService_ChangeUserState_FullMethodName  = "/blog.api.v1.BlogService/ChangeUserState"
-	BlogService_ListUser_FullMethodName         = "/blog.api.v1.BlogService/ListUser"
-	BlogService_SaveSystemConfig_FullMethodName = "/blog.api.v1.BlogService/SaveSystemConfig"
-	BlogService_GetSystemConfig_FullMethodName  = "/blog.api.v1.BlogService/GetSystemConfig"
-	BlogService_ListArticle_FullMethodName      = "/blog.api.v1.BlogService/ListArticle"
-	BlogService_SaveArticle_FullMethodName      = "/blog.api.v1.BlogService/SaveArticle"
-	BlogService_DeleteArticle_FullMethodName    = "/blog.api.v1.BlogService/DeleteArticle"
-	BlogService_ArticleDetail_FullMethodName    = "/blog.api.v1.BlogService/ArticleDetail"
-	BlogService_LikeArticle_FullMethodName      = "/blog.api.v1.BlogService/LikeArticle"
-	BlogService_HitsArticle_FullMethodName      = "/blog.api.v1.BlogService/HitsArticle"
+	BlogService_UserDetail_FullMethodName       = "/blog.v1.BlogService/UserDetail"
+	BlogService_SaveUser_FullMethodName         = "/blog.v1.BlogService/SaveUser"
+	BlogService_ChangeUserState_FullMethodName  = "/blog.v1.BlogService/ChangeUserState"
+	BlogService_ListUser_FullMethodName         = "/blog.v1.BlogService/ListUser"
+	BlogService_SaveSystemConfig_FullMethodName = "/blog.v1.BlogService/SaveSystemConfig"
+	BlogService_GetSystemConfig_FullMethodName  = "/blog.v1.BlogService/GetSystemConfig"
+	BlogService_ListArticle_FullMethodName      = "/blog.v1.BlogService/ListArticle"
+	BlogService_SaveArticle_FullMethodName      = "/blog.v1.BlogService/SaveArticle"
+	BlogService_DeleteArticle_FullMethodName    = "/blog.v1.BlogService/DeleteArticle"
+	BlogService_ArticleDetail_FullMethodName    = "/blog.v1.BlogService/ArticleDetail"
+	BlogService_LikeArticle_FullMethodName      = "/blog.v1.BlogService/LikeArticle"
+	BlogService_HitsArticle_FullMethodName      = "/blog.v1.BlogService/HitsArticle"
 )
 
 // BlogServiceClient is the client API for BlogService service.
@@ -465,7 +465,7 @@ func _BlogService_HitsArticle_Handler(srv interface{}, ctx context.Context, dec 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var BlogService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "blog.api.v1.BlogService",
+	ServiceName: "blog.v1.BlogService",
 	HandlerType: (*BlogServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
