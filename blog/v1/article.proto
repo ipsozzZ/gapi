@@ -27,8 +27,7 @@ message RespDeleteArticle {
 
 // 请求文章
 message ReqArticleDetail {
-    int32 uid = 1;
-    int32 article_id = 2;
+    int32 article_id = 1;
 }
 
 message RespArticleDetail {
