@@ -37,8 +37,7 @@ message RespArticleDetail {
 
 // 请求page页所有文章
 message ReqListArticle {
-    int32 uid = 1;
-    int32 page = 2;
+    int32 page = 1;
 }
 
 message SnapArticle {
