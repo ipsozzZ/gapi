@@ -51,6 +51,7 @@ message RespUserLogout {
 
 message ReqUserSession {
     int32 uid = 1;
+    string token = 2;
 }
 
 message RespUserSession {

@@ -131,6 +131,8 @@ components:
                 uid:
                     type: integer
                     format: int32
+                token:
+                    type: string
         RespUserLogin:
             type: object
             properties:
