@@ -67,4 +67,6 @@ message CUser {
     string intro     = 5;
     string indexlink = 6;
     string session   = 7;
+    int32  state     = 8;
+    int32  phone     = 9;
 }

@@ -101,6 +101,12 @@ components:
                     type: string
                 session:
                     type: string
+                state:
+                    type: integer
+                    format: int32
+                phone:
+                    type: integer
+                    format: int32
         GoogleProtobufAny:
             type: object
             properties:
