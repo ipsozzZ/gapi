@@ -14,7 +14,7 @@ message User {
     string intro     = 6;
     string indexlink = 7;
     int32  state     = 8;
-    int32  phone     = 9;
+    string phone     = 9;
 }
 
 message CUser {
@@ -26,7 +26,7 @@ message CUser {
     string indexlink = 6;
     string session   = 7;
     int32  state     = 8;
-    int32  phone     = 9;
+    string phone     = 9;
 }
 
 // db article mode 
@@ -38,6 +38,7 @@ message Article {
     string title   = 5;
     string intro   = 6;
     string content = 7;
+    int32  state   = 8;
 }
 
 
@@ -48,6 +49,7 @@ message Comment {
     int32  like    = 3;
     string account = 4;
     string content = 5;
+    int32  state   = 6;
 }
 
 // db gconfig mode 

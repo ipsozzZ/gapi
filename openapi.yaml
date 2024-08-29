@@ -105,8 +105,7 @@ components:
                     type: integer
                     format: int32
                 phone:
-                    type: integer
-                    format: int32
+                    type: string
         GoogleProtobufAny:
             type: object
             properties:

@@ -47,6 +47,7 @@ message SnapArticle {
     string account = 4;
     string title   = 5;
     string intro   = 6;
+    int32  state   = 7;
 }
 
 message RespListArticle {
