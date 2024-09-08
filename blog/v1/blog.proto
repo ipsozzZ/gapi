@@ -19,6 +19,12 @@ service BlogService {
             body: "*"
         };
     }
+    rpc UserByAccount (ReqUserByAccount) returns (RespUserDetail) {
+        option (google.api.http) = {
+            post: "/user/acc"
+            body: "*"
+        };
+    }
     rpc SaveUser (ReqSaveUser) returns (RespSaveUser) {
         option (google.api.http) = {
             post: "/user/save"

@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	BlogService_UserDetail_FullMethodName       = "/blog.v1.BlogService/UserDetail"
+	BlogService_UserByAccount_FullMethodName    = "/blog.v1.BlogService/UserByAccount"
 	BlogService_SaveUser_FullMethodName         = "/blog.v1.BlogService/SaveUser"
 	BlogService_ChangeUserState_FullMethodName  = "/blog.v1.BlogService/ChangeUserState"
 	BlogService_ListUser_FullMethodName         = "/blog.v1.BlogService/ListUser"
@@ -39,6 +40,7 @@ const (
 type BlogServiceClient interface {
 	// user相关api
 	UserDetail(ctx context.Context, in *ReqUserDetail, opts ...grpc.CallOption) (*RespUserDetail, error)
+	UserByAccount(ctx context.Context, in *ReqUserByAccount, opts ...grpc.CallOption) (*RespUserDetail, error)
 	SaveUser(ctx context.Context, in *ReqSaveUser, opts ...grpc.CallOption) (*RespSaveUser, error)
 	ChangeUserState(ctx context.Context, in *ReqChangeUserState, opts ...grpc.CallOption) (*RespChangeUserState, error)
 	ListUser(ctx context.Context, in *ReqListUser, opts ...grpc.CallOption) (*RespListUser, error)
@@ -66,6 +68,16 @@ func (c *blogServiceClient) UserDetail(ctx context.Context, in *ReqUserDetail, o
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(RespUserDetail)
 	err := c.cc.Invoke(ctx, BlogService_UserDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *blogServiceClient) UserByAccount(ctx context.Context, in *ReqUserByAccount, opts ...grpc.CallOption) (*RespUserDetail, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RespUserDetail)
+	err := c.cc.Invoke(ctx, BlogService_UserByAccount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -188,6 +200,7 @@ func (c *blogServiceClient) HitsArticle(ctx context.Context, in *ReqHitsArticle,
 type BlogServiceServer interface {
 	// user相关api
 	UserDetail(context.Context, *ReqUserDetail) (*RespUserDetail, error)
+	UserByAccount(context.Context, *ReqUserByAccount) (*RespUserDetail, error)
 	SaveUser(context.Context, *ReqSaveUser) (*RespSaveUser, error)
 	ChangeUserState(context.Context, *ReqChangeUserState) (*RespChangeUserState, error)
 	ListUser(context.Context, *ReqListUser) (*RespListUser, error)
@@ -213,6 +226,9 @@ type UnimplementedBlogServiceServer struct{}
 
 func (UnimplementedBlogServiceServer) UserDetail(context.Context, *ReqUserDetail) (*RespUserDetail, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserDetail not implemented")
+}
+func (UnimplementedBlogServiceServer) UserByAccount(context.Context, *ReqUserByAccount) (*RespUserDetail, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserByAccount not implemented")
 }
 func (UnimplementedBlogServiceServer) SaveUser(context.Context, *ReqSaveUser) (*RespSaveUser, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SaveUser not implemented")
@@ -282,6 +298,24 @@ func _BlogService_UserDetail_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BlogServiceServer).UserDetail(ctx, req.(*ReqUserDetail))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BlogService_UserByAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReqUserByAccount)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlogServiceServer).UserByAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BlogService_UserByAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlogServiceServer).UserByAccount(ctx, req.(*ReqUserByAccount))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -494,6 +528,10 @@ var BlogService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserDetail",
 			Handler:    _BlogService_UserDetail_Handler,
+		},
+		{
+			MethodName: "UserByAccount",
+			Handler:    _BlogService_UserByAccount_Handler,
 		},
 		{
 			MethodName: "SaveUser",

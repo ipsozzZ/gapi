@@ -32,13 +32,13 @@ service NuwaService {
 }
 
 message ReqUserLogin {
-    int32 uid = 1;
-    string account = 2;
-    string sign = 3;
+    string account = 1;
+    string sign = 2;
 }
 
 message RespUserLogin {
-    int32 err_code = 1;
+    int32 uid = 1;
+    int32 err_code = 2;
 }
 
 message ReqUserLogout {

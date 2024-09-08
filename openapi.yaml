@@ -117,9 +117,6 @@ components:
         ReqUserLogin:
             type: object
             properties:
-                uid:
-                    type: integer
-                    format: int32
                 account:
                     type: string
                 sign:
@@ -141,6 +138,9 @@ components:
         RespUserLogin:
             type: object
             properties:
+                uid:
+                    type: integer
+                    format: int32
                 errCode:
                     type: integer
                     format: int32

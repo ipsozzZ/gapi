@@ -30,6 +30,7 @@ const OperationBlogServiceListUser = "/blog.v1.BlogService/ListUser"
 const OperationBlogServiceSaveArticle = "/blog.v1.BlogService/SaveArticle"
 const OperationBlogServiceSaveSystemConfig = "/blog.v1.BlogService/SaveSystemConfig"
 const OperationBlogServiceSaveUser = "/blog.v1.BlogService/SaveUser"
+const OperationBlogServiceUserByAccount = "/blog.v1.BlogService/UserByAccount"
 const OperationBlogServiceUserDetail = "/blog.v1.BlogService/UserDetail"
 
 type BlogServiceHTTPServer interface {
@@ -46,6 +47,7 @@ type BlogServiceHTTPServer interface {
 	// SaveSystemConfig gconfig相关api
 	SaveSystemConfig(context.Context, *ReqSaveSystemConfig) (*RespSaveSystemConfig, error)
 	SaveUser(context.Context, *ReqSaveUser) (*RespSaveUser, error)
+	UserByAccount(context.Context, *ReqUserByAccount) (*RespUserDetail, error)
 	// UserDetail user相关api
 	UserDetail(context.Context, *ReqUserDetail) (*RespUserDetail, error)
 }
@@ -53,6 +55,7 @@ type BlogServiceHTTPServer interface {
 func RegisterBlogServiceHTTPServer(s *http.Server, srv BlogServiceHTTPServer) {
 	r := s.Route("/")
 	r.POST("/user", _BlogService_UserDetail0_HTTP_Handler(srv))
+	r.POST("/user/acc", _BlogService_UserByAccount0_HTTP_Handler(srv))
 	r.POST("/user/save", _BlogService_SaveUser0_HTTP_Handler(srv))
 	r.POST("/user/changestate", _BlogService_ChangeUserState0_HTTP_Handler(srv))
 	r.POST("/user/list", _BlogService_ListUser0_HTTP_Handler(srv))
@@ -78,6 +81,28 @@ func _BlogService_UserDetail0_HTTP_Handler(srv BlogServiceHTTPServer) func(ctx h
 		http.SetOperation(ctx, OperationBlogServiceUserDetail)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.UserDetail(ctx, req.(*ReqUserDetail))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*RespUserDetail)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _BlogService_UserByAccount0_HTTP_Handler(srv BlogServiceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ReqUserByAccount
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationBlogServiceUserByAccount)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UserByAccount(ctx, req.(*ReqUserByAccount))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -339,6 +364,7 @@ type BlogServiceHTTPClient interface {
 	SaveArticle(ctx context.Context, req *ReqSaveArticle, opts ...http.CallOption) (rsp *RespSaveArticle, err error)
 	SaveSystemConfig(ctx context.Context, req *ReqSaveSystemConfig, opts ...http.CallOption) (rsp *RespSaveSystemConfig, err error)
 	SaveUser(ctx context.Context, req *ReqSaveUser, opts ...http.CallOption) (rsp *RespSaveUser, err error)
+	UserByAccount(ctx context.Context, req *ReqUserByAccount, opts ...http.CallOption) (rsp *RespUserDetail, err error)
 	UserDetail(ctx context.Context, req *ReqUserDetail, opts ...http.CallOption) (rsp *RespUserDetail, err error)
 }
 
@@ -485,6 +511,19 @@ func (c *BlogServiceHTTPClientImpl) SaveUser(ctx context.Context, in *ReqSaveUse
 	pattern := "/user/save"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationBlogServiceSaveUser))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *BlogServiceHTTPClientImpl) UserByAccount(ctx context.Context, in *ReqUserByAccount, opts ...http.CallOption) (*RespUserDetail, error) {
+	var out RespUserDetail
+	pattern := "/user/acc"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationBlogServiceUserByAccount))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

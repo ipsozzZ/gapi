@@ -32,6 +32,11 @@ message ReqUserDetail {
     int32 target_uid = 2;
 }
 
+// 请求玩家详细数据
+message ReqUserByAccount {
+    string account = 1;
+}
+
 message RespUserDetail {
     int32 err_code = 1;
     CUser detail = 2;

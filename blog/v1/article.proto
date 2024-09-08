@@ -48,6 +48,7 @@ message SnapArticle {
     string title   = 5;
     string intro   = 6;
     int32  state   = 7;
+    string face    = 8;
 }
 
 message RespListArticle {
